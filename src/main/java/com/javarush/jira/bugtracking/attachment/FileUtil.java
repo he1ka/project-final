@@ -7,8 +7,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -25,14 +23,15 @@ public class FileUtil {
             throw new IllegalRequestDataException("Select a file to upload.");
         }
 
-        File dir = new File(directoryPath);
-        if (dir.exists() || dir.mkdirs()) {
-            File file = new File(directoryPath + fileName);
-            try (OutputStream outStream = new FileOutputStream(file)) {
+        Path dirPath = Paths.get(directoryPath);
+        try {
+            Files.createDirectories(dirPath);
+            Path filePath = dirPath.resolve(fileName);
+            try (OutputStream outStream = Files.newOutputStream(filePath)) {
                 outStream.write(multipartFile.getBytes());
-            } catch (IOException ex) {
-                throw new IllegalRequestDataException("Failed to upload file" + multipartFile.getOriginalFilename());
             }
+        } catch (IOException ex) {
+            throw new IllegalRequestDataException("Failed to upload file " + multipartFile.getOriginalFilename());
         }
     }
 
@@ -46,7 +45,7 @@ public class FileUtil {
                 throw new IllegalRequestDataException("Failed to download file " + resource.getFilename());
             }
         } catch (MalformedURLException ex) {
-            throw new NotFoundException("File" + fileLink + " not found");
+            throw new NotFoundException("File " + fileLink + " not found");
         }
     }
 
@@ -55,7 +54,7 @@ public class FileUtil {
         try {
             Files.delete(path);
         } catch (IOException ex) {
-            throw new IllegalRequestDataException("File" + fileLink + " deletion failed.");
+            throw new IllegalRequestDataException("File " + fileLink + " deletion failed.");
         }
     }
 
