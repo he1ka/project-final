@@ -8,31 +8,36 @@ from PROFILE;
 
 delete
 from ACTIVITY;
+create sequence if not exists ACTIVITY_ID_SEQ;
 alter
 sequence ACTIVITY_ID_SEQ restart with 1;
 delete
 from TASK;
+create sequence if not exists TASK_ID_SEQ;
 alter
 sequence TASK_ID_SEQ restart with 1;
 delete
 from SPRINT;
+create sequence if not exists SPRINT_ID_SEQ;
 alter
 sequence SPRINT_ID_SEQ restart with 1;
 delete
 from PROJECT;
+create sequence if not exists PROJECT_ID_SEQ;
 alter
 sequence PROJECT_ID_SEQ restart with 1;
 
 delete
 from USERS;
+create sequence if not exists USERS_ID_SEQ;
 alter
 sequence USERS_ID_SEQ restart with 1;
 
-insert into USERS (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
-values ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'userDisplayName'),
-       ('admin@gmail.com', '{noop}admin', 'adminFirstName', 'adminLastName', 'adminDisplayName'),
-       ('guest@gmail.com', '{noop}guest', 'guestFirstName', 'guestLastName', 'guestDisplayName'),
-       ('manager@gmail.com', '{noop}manager', 'managerFirstName', 'managerLastName', 'managerDisplayName');
+insert into USERS (ID, EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
+values (1, 'user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'userDisplayName'),
+       (2, 'admin@gmail.com', '{noop}admin', 'adminFirstName', 'adminLastName', 'adminDisplayName'),
+       (3, 'guest@gmail.com', '{noop}guest', 'guestFirstName', 'guestLastName', 'guestDisplayName'),
+       (4, 'manager@gmail.com', '{noop}manager', 'managerFirstName', 'managerLastName', 'managerDisplayName');
 
 -- 0 DEV
 -- 1 ADMIN
@@ -57,27 +62,27 @@ values (1, 'skype', 'userSkype'),
        (2, 'vk', 'adminVk');
 
 
-insert into PROJECT (code, title, description, type_code, parent_id)
-values ('PR1', 'PROJECT-1', 'test project 1', 'task_tracker', null),
-       ('PR2', 'PROJECT-2', 'test project 2', 'task_tracker', 1);
+insert into PROJECT (ID, code, title, description, type_code, parent_id)
+values (1, 'PR1', 'PROJECT-1', 'test project 1', 'task_tracker', null),
+       (2, 'PR2', 'PROJECT-2', 'test project 2', 'task_tracker', 1);
 
-insert into SPRINT (status_code, startpoint, endpoint, code, project_id)
-values ('finished', '2023-05-01 08:05:10', '2023-05-07 17:10:01', 'SP-1.001', 1),
-       ('active', '2023-05-01 08:06:00', null, 'SP-1.002', 1),
-       ('active', '2023-05-01 08:07:00', null, 'SP-1.003', 1),
-       ('planning', '2023-05-01 08:08:00', null, 'SP-1.004', 1),
-       ('active', '2023-05-10 08:06:00', null, 'SP-2.001', 2),
-       ('planning', '2023-05-10 08:07:00', null, 'SP-2.002', 2),
-       ('planning', '2023-05-10 08:08:00', null, 'SP-2.003', 2);
+insert into SPRINT (ID, status_code, startpoint, endpoint, code, project_id)
+values (1, 'finished', '2023-05-01 08:05:10', '2023-05-07 17:10:01', 'SP-1.001', 1),
+       (2, 'active', '2023-05-01 08:06:00', null, 'SP-1.002', 1),
+       (3, 'active', '2023-05-01 08:07:00', null, 'SP-1.003', 1),
+       (4, 'planning', '2023-05-01 08:08:00', null, 'SP-1.004', 1),
+       (5, 'active', '2023-05-10 08:06:00', null, 'SP-2.001', 2),
+       (6, 'planning', '2023-05-10 08:07:00', null, 'SP-2.002', 2),
+       (7, 'planning', '2023-05-10 08:08:00', null, 'SP-2.003', 2);
 
-insert into TASK (TITLE, TYPE_CODE, STATUS_CODE, PROJECT_ID, SPRINT_ID, STARTPOINT)
-values ('Data', 'epic', 'in_progress', 1, 1, '2023-05-15 09:05:10'),
-       ('Trees', 'epic', 'in_progress', 1, 1, '2023-05-15 12:05:10'),
-       ('task-3', 'task', 'ready_for_test', 2, 5, '2023-06-14 09:28:10'),
-       ('task-4', 'task', 'ready_for_review', 2, 5, '2023-06-14 09:28:10'),
-       ('task-5', 'task', 'todo', 2, 5, '2023-06-14 09:28:10'),
-       ('task-6', 'task', 'done', 2, 5, '2023-06-14 09:28:10'),
-       ('task-7', 'task', 'canceled', 2, 5, '2023-06-14 09:28:10');
+insert into TASK (ID, TITLE, TYPE_CODE, STATUS_CODE, PROJECT_ID, SPRINT_ID, STARTPOINT)
+values (1, 'Data', 'epic', 'in_progress', 1, 1, '2023-05-15 09:05:10'),
+       (2, 'Trees', 'epic', 'in_progress', 1, 1, '2023-05-15 12:05:10'),
+       (3, 'task-3', 'task', 'ready_for_test', 2, 5, '2023-06-14 09:28:10'),
+       (4, 'task-4', 'task', 'ready_for_review', 2, 5, '2023-06-14 09:28:10'),
+       (5, 'task-5', 'task', 'todo', 2, 5, '2023-06-14 09:28:10'),
+       (6, 'task-6', 'task', 'done', 2, 5, '2023-06-14 09:28:10'),
+       (7, 'task-7', 'task', 'canceled', 2, 5, '2023-06-14 09:28:10');
 
 
 insert into ACTIVITY(AUTHOR_ID, TASK_ID, UPDATED, COMMENT, TITLE, DESCRIPTION, ESTIMATE, TYPE_CODE, STATUS_CODE,
