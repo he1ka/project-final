@@ -37,4 +37,10 @@ public class ProfileTo extends BaseTo {
                 .map(ContactTo::getCode)
                 .anyMatch(s -> s.equals(type));
     }
+
+    public boolean isContactTypeWithValue(String type, String value) {
+        return contacts.stream()
+                .filter(contact -> contact.getCode().equals(type))
+                .anyMatch(contact -> contact.getValue().equals(value));
+    }
 }
