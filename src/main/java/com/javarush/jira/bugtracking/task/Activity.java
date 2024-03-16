@@ -21,6 +21,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class Activity extends BaseEntity implements HasAuthorId {
+    public static final String STATUS_CODE_IN_PROGRESS = "in_progress";
+    public static final String STATUS_CODE_READY_FOR_REVIEW = "ready_for_review";
+    public static final String STATUS_CODE_DONE = "done";
+
     @NoHtml
     @Size(max = 1024)
     @Nullable
