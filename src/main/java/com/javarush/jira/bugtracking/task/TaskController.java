@@ -3,10 +3,7 @@ package com.javarush.jira.bugtracking.task;
 import com.javarush.jira.bugtracking.Handlers;
 import com.javarush.jira.bugtracking.UserBelong;
 import com.javarush.jira.bugtracking.UserBelongRepository;
-import com.javarush.jira.bugtracking.task.to.ActivityTo;
-import com.javarush.jira.bugtracking.task.to.TaskTo;
-import com.javarush.jira.bugtracking.task.to.TaskToExt;
-import com.javarush.jira.bugtracking.task.to.TaskToFull;
+import com.javarush.jira.bugtracking.task.to.*;
 import com.javarush.jira.bugtracking.tree.ITreeNode;
 import com.javarush.jira.common.util.Util;
 import com.javarush.jira.login.AuthUser;
@@ -31,7 +28,6 @@ import static com.javarush.jira.common.BaseHandler.createdResponse;
 @RequestMapping(value = TaskController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class TaskController {
-
     public static final String REST_URL = "/api/tasks";
 
     private final TaskService taskService;
@@ -39,7 +35,7 @@ public class TaskController {
     private final Handlers.TaskHandler handler;
     private final Handlers.ActivityHandler activityHandler;
     private final UserBelongRepository userBelongRepository;
-
+    private final TaskTagService taskTagService;
 
     @GetMapping("/{id}")
     public TaskToFull get(@PathVariable long id) {
@@ -149,6 +145,24 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
         activityService.delete(id);
+    }
+
+    @GetMapping(path = "/{id}/tags")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TagToEx> listTags(@PathVariable long id) {
+        return taskTagService.getAllTagsForTask(id);
+    }
+
+    @PostMapping(path = "/{id}/tags", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public TagToEx createTag(@Valid @RequestBody TagTo tagTo, @PathVariable long id) {
+        return taskTagService.addTagToTask(id, tagTo);
+    }
+
+    @DeleteMapping("/{id}/tags/{tag}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTag(@PathVariable long id, @PathVariable String tag) {
+        taskTagService.deleteTagFromTask(id, tag);
     }
 
     private record TaskTreeNode(TaskTo taskTo, List<TaskTreeNode> subNodes) implements ITreeNode<TaskTo, TaskTreeNode> {
